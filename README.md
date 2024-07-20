@@ -13,7 +13,7 @@
 
 * ./rusty_ssh - opens menu, add logins and connect from there
 
-* ./rusty_ssh <server nickname> - connects to server without needing to use menu
+* ./rusty_ssh servernickname - connects to server without needing to use menu
 
 ## Build
 
