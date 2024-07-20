@@ -13,6 +13,7 @@ use std::io::{self};
 use std::process::Command;
 use std::fs;
 use std::env;
+use std::path::PathBuf;
 
 #[derive(Serialize, Deserialize)]
 struct SshLogin {
@@ -94,9 +95,26 @@ fn decrypt(data: &[u8], key: &Key) -> Vec<u8> {
     cipher.decrypt(nonce, data).unwrap()
 }
 
-fn main() {        
+fn find_vault_json() -> PathBuf {
+    let exe_path = env::current_exe().expect("Failed to get the current executable path");
+    let exe_dir = exe_path.parent().expect("Failed to get the executable's directory");
+    let vault_path = exe_dir.join("vault.json");
+
+    vault_path
+}
+
+
+fn main() {    
+    let file_path_buf = find_vault_json();
+    let file_path = match file_path_buf.to_str() {
+        Some(path) => path,
+        None => {
+            println!("Failed to convert path to string");
+            return;
+        }
+    };    
     let args: Vec<String> = env::args().collect();
-    let file_path = "vault.json";
+    //let file_path = "vault.json";
     let master_password;
     let mut vault = Vault::new();
 
